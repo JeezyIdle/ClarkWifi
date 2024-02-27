@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="LoginCss.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    
+    
+
+    <div class="wrapper">
+        <div class="title-text">
+            <div class="title login">
+                CLARK CONNECT
+            </div>
+        </div>
+        <div class="form-container">
+            <div class="slide-controls">
+                <input type="radio" name="slide" id="login" checked>
+                <!--<input type="radio" name="slide" id="signup">-->
+                <label for="login" class="slide login">Press To Generate Token</label>
+                <div class="slider-tab"></div>
+            </div>
+
+            <!-- Generate Code Button-->
+            <button id="generateButton" class="generate-code">Generate Token</button> 
+
+
+            <div class="form-inner">
+                <form action="connected.html" class="login" id="login-form">
+                    <div class="field">
+                        <!--Generated code will be pasted here-->
+                        <input type="text" id="token" placeholder="Enter token" required>
+                    </div>
+                    
+                    <!--Terms and Conditions-->
+                    <div class="tacbox">
+                        <input id="checkbox" type="checkbox" />
+                        <label for="checkbox"> I accept <a href="TnC.html">Terms and Conditions</a>.</label>
+                    </div>
+
+                    <div class="field btn">
+                        <div class="btn-layer"></div>
+                        <input type="submit" value="CONNECT">
+                    </div>
+
+                    
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const loginText = document.querySelector(".title-text .login");
+        const loginForm = document.querySelector("form.login");
+        const loginBtn = document.querySelector("label.login");
+        const termsCheckbox = document.getElementById("checkbox");
+    
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting
+    
+            // Get the token entered by the user
+            const token = document.getElementById("token").value;
+            const termsAccepted = termsCheckbox.checked;
+    
+            // Check if the token is at least 8 characters long and terms are accepted
+            if (/^[A-Za-z0-9]{8}$/.test(token) && termsAccepted) {
+                // Redirect to the "after.html" page
+                window.location.href = "after.html";
+            } else {
+                if (token.length < 8) {
+                    alert("Token should be at least 8 characters long.");
+                } else if (!termsAccepted) {
+                    alert("Please accept the Terms and Conditions.");
+                } else {
+                    alert("Token should be exactly 8 characters long.");
+                }
+            }
+        });
+    
+        loginBtn.onclick = (() => {
+            loginForm.style.marginLeft = "0%";
+            loginText.style.marginLeft = "0%";
+        });
+    
+        function generateAlphaNumericCode(length) {
+            const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+            return result;
+        }
+    
+        document.getElementById('generateButton').addEventListener('click', function() {
+            const code = generateAlphaNumericCode(8);
+            document.getElementById('token').value = code;
+            document.getElementById('token').select();
+            document.execCommand('copy');
+            alert('Code copied to clipboard: ' + code);
+        });
+    </script>
+</body>
+
+</html>
